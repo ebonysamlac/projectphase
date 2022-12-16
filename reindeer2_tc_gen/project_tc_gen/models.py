@@ -3,8 +3,9 @@ from email.policy import default
 from django.db import models
 from datetime import datetime
 import uuid
-from django.contrib.auth.models import User
-from users.models import Profile
+#from django.contrib.auth.models import User
+#from users.models import Profile
+from django.utils import timezone
 
 # Create your models here.
 
@@ -15,18 +16,27 @@ class Company(models.Model):
     country = models.CharField(max_length=100)
     company_email = models.CharField(max_length=100)
     company_address = models.CharField(max_length=100)
-    owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    policy_date = models.DateField("Policy Effective Date", default=timezone.now)
+    #owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    #id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+
+
+    class Meta:
+        verbose_name_plural = "Company"
+
 
     def __str__(self):
         return self.company_name
 
 
 class Review(models.Model):
-    user = models.ForeignKey(Profile, on_delete=models.PROTECT)
+    #user = models.ForeignKey(Profile, on_delete=models.PROTECT)
     review_id = models.IntegerField()
     reviews = models.TextField(null=False, blank=False)
     rating = models.IntegerField()
+
+    class Meta:
+        verbose_name_plural = "Review"
 
 
     def __str__(self):
